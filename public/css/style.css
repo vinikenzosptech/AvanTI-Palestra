@@ -4,6 +4,7 @@ body{
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
+    width: auto;
 }
 
 .home-header{
@@ -46,7 +47,7 @@ body{
     justify-content: center;
     align-items: center;
     height: 450px;
-    width: 100%;
+    width: auto;
     color: #f5f5f5;
     font-size: xxx-large;
     padding: 1px;
@@ -84,9 +85,10 @@ body{
     align-items: center;
     color: #f5f5f5;
     border-radius: 6px;
+    font-size: 1.3rem;
 }
 
-#secao-descricao{
+#secao-funcionalidade{
     background-color: #f5f5f5;
     height: 10rem;
     display: flex;
@@ -96,7 +98,7 @@ body{
 
 }
 
-#funcionalidade-descricao-1{
+#funcionalidade-1{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -105,7 +107,7 @@ body{
     text-align: center; 
 }
 
-#funcionalidade-descricao-2{
+#funcionalidade-2{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -115,7 +117,7 @@ body{
     margin-bottom: 20px;  
 }
 
-#funcionalidade-descricao-3{
+#funcionalidade-3{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -125,11 +127,11 @@ body{
 }
 
 
-.titulo-descricao{
+.titulo-funcionalidade{
     font-size: x-large;
 }
 
-.frase-descricao{
+.frase-funcionalidade{
     color: #545454;
 
 }
@@ -139,4 +141,108 @@ body{
     border-color: #947d3b;
     height: 90px;
     margin-top: 40px;
+}
+
+#secao-descricao{
+    background-color: #004d2b;
+    height: 25rem;
+    display: flex;
+    flex-direction: row;
+    color: #f5f5f5;
+    font-size:2rem;
+    align-items: center;
+    padding: 1rem;
+    
+}
+
+#descricao-titulo{
+    font-size: 2.7rem;
+}
+
+#img-descricao{
+    margin-left: 5rem;
+}
+
+.descricao-texto{
+    font-size: 1.3rem;   
+}
+
+#projeto-descricao{
+    width: 50rem;
+    margin-left: 2rem;
+}
+
+
+#secao-chamariz{
+    background: url("../assets/imgs/idolos_banner.png") center / 100% 100% no-repeat;
+    height: 20rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#titulo-chamariz{
+    color: #004d2b;
+    font-size: 2.7rem;
+    width: 50rem;
+    padding: 2rem;
+}
+
+.texto-chamariz{
+    font-size: 1.3rem;
+}
+
+#botao-testar{
+    background-color: #004d2b;
+    border: solid 3px;
+    border-color: #947d3b;
+    height: 5rem;
+    width: 18rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f5f5f5;
+    border-radius: 8px;
+    margin-right: 8rem;
+    margin-left: auto;
+    align-self: center;
+    margin-top: 6rem;
+    font-size: 1.2rem;
+}
+
+.footer{
+    display: flex;
+    background-color: #004d2b;
+    height: 7rem;
+    flex-direction: column;
+}
+
+.info-footer{
+    width: auto;
+    margin-left: 3rem;
+    margin-right: 2.5rem;
+    display: flex;
+    flex-direction: row;
+    height: 3.5rem;
+}
+
+.link-footer{
+    margin-left: auto;
+    align-self: center;
+    color:#f5f5f5;
+    width: 10rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.divisor-footer{
+    border: solid 1px;
+    border-color: #947d3b;
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+
+.texto-direitos{
+    color: #f5f5f5;
+    align-self: center;
 }
