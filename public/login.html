@@ -24,7 +24,8 @@
             alt="logo"
             width="350px"
             />
-            <button class="botao-entrar">Entrar</button>
+            <a class="botao-entrar" href="login.html">Entrar</a>
+            <a class="botao-cadastrar" href="cadastro.html">Cadastrar</a>
         </div>
   <!--header fim-->
   <div class="divisor"></div>
@@ -66,9 +67,9 @@
     <div class="footer">
           <div class="info-footer">
             <img src="assets/imgs/AvanTI_Footer.png" alt="avanti_logo_footer" height="50px">
-            <div class="link-footer">
-              <span>Inicio</span>
-              <span>Contato</span>
+            <div class="links-footer">
+              <a class="link-footer" href="index.html" >Inicio</a>
+              <a class="link-footer">Contato</a>
             </div>
           </div>
 
@@ -86,7 +87,6 @@
 
 
     function entrar() {
-        aguardar();
 
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
@@ -124,9 +124,7 @@
                     console.log(JSON.stringify(json));
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
-                    sessionStorage.CPF_USUARIO = json.cpf;
                     sessionStorage.ID_USUARIO = json.id;
-                    sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
 
                     setTimeout(function () {
                         window.location = "./dashboard/cards.html";
