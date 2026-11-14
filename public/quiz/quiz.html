@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo - Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body onload="onloadEsconder()">
+    <div id="pontuacaoEJogo">
+        <button id="btnIniciarQuiz" onclick="iniciarQuiz()">INICIAR QUIZ</button>
+
+        <div id="pontuacao" class="flex-colunar width-fit-content border-primary">
+            <div id="pontuacaoDuranteJogo" class="flex-colunar padding-8">
+                <span class="width-fit-content">Quantidade de acertos: <span id="spanCertas"></span></span>
+                <span class="width-fit-content">Quantidade de erros: <span id="spanErradas"></span></span>
+            </div>
+            <div id="pontuacaoFinalJogo" class="flex-colunar padding-8">
+                <span id="pontuacaoFinal" class="width-fit-content">Pontuação Final:
+                    <span id="spanPontuacaoFinal">***</span>
+                </span>
+                <span id="msgFinal" class="width-fit-content">***</span>
+            </div>
+        </div>
+
+        <div id="jogo" class="width-fit-content flex-colunar border-secondary">
+
+            <div id="infoQuestao" class="padding-8">
+                <span>Questão atual: <span id="spanNumeroDaQuestaoAtual"></span> de <span id="qtdQuestoes"></span>
+                    questões.</span>
+            </div>
+
+            <div id="perguntaDaQuestaoAtual" class="padding-8">
+                <span id="spanQuestaoExibida" class="text-bold"></span>
+            </div>
+
+            <div id="infoAlternativas" class="padding-8">
+                <span><em>Escolha uma opção dentre as abaixo:</em></span>
+            </div>
+
+            <div id="opcoes" class="flex-colunar padding-8">
+                <span>
+                    <input type="radio" id="primeiraOpcao" name="option" class="radio" value="A" />
+                    <label for="primeiraOpcao" class="option" id="labelOpcaoUm"></label>
+                </span>
+                <span>
+                    <input type="radio" id="segundaOpcao" name="option" class="radio" value="B" />
+                    <label for="segundaOpcao" class="option" id="labelOpcaoDois"></label>
+                </span>
+                <span>
+                    <input type="radio" id="terceiraOpcao" name="option" class="radio" value="C" />
+                    <label for="terceiraOpcao" class="option" id="labelOpcaoTres"></label>
+                </span>
+                <span>
+                    <input type="radio" id="quartaOpcao" name="option" class="radio" value="D" />
+                    <label for="quartaOpcao" class="option" id="labelOpcaoQuatro"></label>
+                </span>
+            </div>
+
+            <div id="botoes" class="flex-colunar padding-8">
+                <button onclick="submeter()" id="btnSubmeter">Submeter resposta</button>
+                <button onclick="avancar()" id="btnProx" disabled>Avançar para próxima questão</button>
+                <button onclick="tentarNovamente()" id="btnTentarNovamente" disabled>Tentar novamente</button>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    const ID_QUIZ = 1                          
+    const ID_USUARIO = sessionStorage.ID_USUARIO 
+
+    let listaDeQuestoes = []
+
+    let respostasDoUsuario = []
+    let classificacaoFinal = ""
+
+    let numeroDaQuestaoAtual = 0
+    let pontuacaoFinal = 0
+    let tentativaIncorreta = 0
+    let certas = 0
+    let erradas = 0
+    let quantidadeDeQuestoes = 0 
+
+    
+    function onloadEsconder() {
+        document.getElementById('pontuacao').style.display = "none"
+        document.getElementById('jogo').style.display = "none"
+    }
+
+    // função assincrona para buscar as questões que virão do banco
+    async function iniciarQuiz() {
+        try {
+            const resposta = await fetch(`/questoes/listar/${ID_QUIZ}`)
+
+            if (!resposta.ok) {
+                throw new Error("Status " + resposta.status)
+            }
+
+            const questoesDoBanco = await resposta.json()
+
+            listaDeQuestoes = questoesDoBanco.sort((a, b) => a.numero - b.numero) // ordena as questões de acordo com o número de cada uma
+        } catch (erro) {
+            console.log(erro)
+            alert("Não foi possível carregar as questões. Tente novamente.")
+            return
+        }
+
+        if (listaDeQuestoes.length == 0) {
+            alert("Este quiz ainda não possui questões.")
+            return
+        }
+
+        quantidadeDeQuestoes = listaDeQuestoes.length // atualiza a quantidade de questões depois de carregar
+
+        document.getElementById('pontuacao').style.display = "flex"
+        document.getElementById('jogo').style.display = "flex"
+        document.getElementById('btnIniciarQuiz').style.display = "none"
+
+        document.getElementById('qtdQuestoes').innerHTML = quantidadeDeQuestoes
+
+        preencherHTMLcomQuestaoAtual(0)
+
+        btnSubmeter.disabled = false
+        btnProx.disabled = true
+        btnTentarNovamente.disabled = true
+    }
+
+    function preencherHTMLcomQuestaoAtual(index) {
+        habilitarAlternativas(true)
+        const questaoAtual = listaDeQuestoes[index]
+        numeroDaQuestaoAtual = index
+        document.getElementById("spanNumeroDaQuestaoAtual").innerHTML = Number(index) + 1
+        document.getElementById("spanQuestaoExibida").innerHTML = questaoAtual.pergunta;
+        document.getElementById("labelOpcaoUm").innerHTML = questaoAtual.alternativa_a;
+        document.getElementById("labelOpcaoDois").innerHTML = questaoAtual.alternativa_b;
+        document.getElementById("labelOpcaoTres").innerHTML = questaoAtual.alternativa_c;
+        document.getElementById("labelOpcaoQuatro").innerHTML = questaoAtual.alternativa_d;
+    }
+
+    function submeter() {
+        const options = document.getElementsByName("option");
+
+        let hasChecked = false  // verifica se tem algum option marcado, se tiver ele habilita e sai do for
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].checked) {
+                hasChecked = true
+                break
+            }
+        }
+
+        if (!hasChecked) {
+            alert("Não há alternativas escolhidas. Escolha uma opção.")
+        } else {
+            btnSubmeter.disabled = true  // desabilita o botão de submeter para não enviar duas respostas para a questão e habilita o botão para ir para próxima
+            btnProx.disabled = false
+
+            habilitarAlternativas(false)
+
+            checarResposta()
+        }
+    }
+
+    function habilitarAlternativas(trueOrFalse) {
+        let opcaoEscolhida = trueOrFalse ? false : true //if-else de uma linha só, se for true retorna (false) se for false retorna (true). é assim porque o radius usa o valor invertido para habilitar ou desabilitar o clique
+
+        primeiraOpcao.disabled = opcaoEscolhida // se ele for a opção escolhida ele fica ele não pode ser clicável outra vez
+        segundaOpcao.disabled = opcaoEscolhida
+        terceiraOpcao.disabled = opcaoEscolhida
+        quartaOpcao.disabled = opcaoEscolhida
+    }
+
+    function avancar() {
+        btnProx.disabled = true
+        btnSubmeter.disabled = false
+
+        desmarcarRadioButtons()
+
+        if (numeroDaQuestaoAtual < quantidadeDeQuestoes - 1) {
+            preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual)
+        } else if (numeroDaQuestaoAtual == quantidadeDeQuestoes - 1) {
+            alert("Atenção... a próxima é a ultima questão!")
+            preencherHTMLcomQuestaoAtual(numeroDaQuestaoAtual)
+        } else {
+            finalizarJogo()
+        }
+        limparCoresBackgroundOpcoes()
+    }
+
+    function tentarNovamente() {
+        window.location.reload()
+    }
+
+    function checarResposta() {
+    const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual]
+    const respostaQuestaoAtual = questaoAtual.alternativa_correta 
+    const options = document.getElementsByName("option");
+
+    options.forEach((option) => { // vai registrar na lista a resposta do usuário para a questão
+        if (option.checked) {
+            respostasDoUsuario.push({
+                fkQuestao: questaoAtual.id,
+                alternativaSelecionada: option.value 
+            })
+        }
+    })
+
+    let alternativaCorreta = null
+
+    options.forEach((option) => {
+        if (option.value === respostaQuestaoAtual) { // faz um loop em toda as opções e compara se o value é igual a marcada como correta no banco, quando encontrar atribui na variavel alternativaCorreta
+            alternativaCorreta = option.labels[0].id
+        }
+    })
+
+    options.forEach((option) => {
+        if (option.checked === true && option.value === respostaQuestaoAtual) {
+            document.getElementById(alternativaCorreta).classList.add("text-success-with-bg")
+            pontuacaoFinal++
+            certas++
+            document.getElementById("spanCertas").innerHTML = certas
+            numeroDaQuestaoAtual++
+        } else if (option.checked && option.value !== respostaQuestaoAtual) {
+            const wrongLabelId = option.labels[0].id
+
+            document.getElementById(wrongLabelId).classList.add("text-danger-with-bg")
+            document.getElementById(alternativaCorreta).classList.add("text-success-with-bg")
+            tentativaIncorreta++
+            erradas++
+            document.getElementById("spanErradas").innerHTML = erradas
+            numeroDaQuestaoAtual++
+        }
+    })
+}
+
+    function limparCoresBackgroundOpcoes() {
+        const options = document.getElementsByName("option");
+        options.forEach((option) => {
+            document.getElementById(option.labels[0].id).classList.remove("text-danger-with-bg")
+            document.getElementById(option.labels[0].id).classList.remove("text-success-with-bg")
+        })
+    }
+
+    function desmarcarRadioButtons() {
+        const options = document.getElementsByName("option");
+        for (let i = 0; i < options.length; i++) {
+            options[i].checked = false;
+        }
+    }
+
+    function finalizarJogo() {
+        let textoParaMensagemFinal = null
+        let classComCoresParaMensagemFinal = null
+        const porcentagemFinalDeAcertos = pontuacaoFinal / quantidadeDeQuestoes
+
+        if (porcentagemFinalDeAcertos <= 0.3) {
+            textoParaMensagemFinal = "Parece que você não estudou..."
+            classComCoresParaMensagemFinal = "text-danger-with-bg"
+            classificacaoFinal = "Iniciante"
+        }
+        else if (porcentagemFinalDeAcertos > 0.3 && porcentagemFinalDeAcertos < 0.9) {
+            textoParaMensagemFinal = "Pode melhorar na próxima, hein!"
+            classComCoresParaMensagemFinal = "text-warning-with-bg"
+            classificacaoFinal = "Intermediário"
+        }
+        else if (porcentagemFinalDeAcertos >= 0.9) {
+            textoParaMensagemFinal = "Uau, parabéns!"
+            classComCoresParaMensagemFinal = "text-success-with-bg"
+            classificacaoFinal = "Avançado"
+        }
+
+        textoParaMensagemFinal += "<br> Você acertou " + Math.round((porcentagemFinalDeAcertos) * 100) + "% das questões."
+
+        document.getElementById('msgFinal').innerHTML = textoParaMensagemFinal
+        document.getElementById('msgFinal').classList.add(classComCoresParaMensagemFinal)
+        document.getElementById('spanPontuacaoFinal').innerHTML = pontuacaoFinal
+
+        document.getElementById('jogo').classList.add("text-new-gray")
+
+        btnProx.disabled = true
+        btnSubmeter.disabled = true
+        btnTentarNovamente.disabled = false
+
+        salvarDesempenho() 
+    }
+
+    async function salvarDesempenho() {
+        try {
+            const resposta = await fetch("/desempenhos/cadastrar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    qtdAcertos: pontuacaoFinal,
+                    classificacao: classificacaoFinal,
+                    fkQuiz: ID_QUIZ,
+                    fkUsuario: ID_USUARIO,
+                    respostas: respostasDoUsuario
+                })
+            })
+
+            if (!resposta.ok) {
+                throw new Error("Status " + resposta.status)
+            }
+
+            console.log("Desempenho salvo com sucesso!")
+        } catch (erro) {
+            console.log(erro)
+            alert("Seu resultado não pôde ser salvo.")
+        }
+    }
+</script>
