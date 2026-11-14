@@ -54,11 +54,21 @@
           </div>
           <div class="campo">
             <span>Senha:</span>
-            <input id="senha_input" type="password" placeholder="******" />
+            <input onkeyup="validarSenha(), confimarSenha()" id="senha_input" type="password" placeholder="******" />
           </div>
+          <div>
+            <p id="qtd_caracteres" class="criterio">A senha deve ter no mínimo 8 caracteres</p>
+            <p id="qtd_minuscula" class="criterio">A senha deve ter no mínimo 1 letra minúscula</p>
+            <p id="qtd_maiuscula" class="criterio">A senha deve ter no mínimo 1 letra maiúscula</p>
+            <p id="carac_especiais" class="criterio">A senha deve ter no mínimo 1 caractere especial</p>
+          </div>
+          
           <div class="campo">
             <span>Confirmação da Senha:</span>
-            <input id="confirmacao_senha_input" type="password" placeholder="******" />
+            <input onkeyup="confimarSenha()" id="confirmacao_senha_input" type="password" placeholder="******" />
+          </div>
+          <div>
+            <p id="msg_confirmacao_senha" class="criterio">A senha deve ser igual a anterior</p>
           </div>
           <button class="botao" onclick="cadastrar()">Cadastrar</button>
         </div>
@@ -94,8 +104,13 @@
 
 <script>
 
-  // Array para armazenar empresas cadastradas para validação de código de ativação 
-  let listaEmpresasCadastradas = [];
+  let senha_valida = false;
+  let especial_valido = false;
+  let confimacao_valida = false;
+
+  
+
+  let caracteres_especiais = ["!", "@", "#", "$", "%", "¨", "&", "*", "(", ")", "-", "+", "=", "?", "_", "~", "^", "/", "\\", "[", "]", "{", "}", ".", ",", ";", ":"];
 
   function cadastrar() {
     // aguardar();
@@ -116,10 +131,26 @@
     ) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
-
+        "(Todos os campos devem ser preenchidos!)";
       finalizarAguardar();
       return false;
+    } else if(!(emailVar.includes("@"))){
+        cardErro.style.display = "block";
+        mensagem_erro.innerHTML = "(Email inválido!)";
+        finalizarAguardar();
+      return false;
+    } else if(!senha_valida || !especial_valido){
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "(Senha inválida!)";
+      finalizarAguardar();
+      return false;
+    } else if(!confimacao_valida){
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "(Confirmação de senha inválida!)";
+      finalizarAguardar();
+      return false;  
     } else {
       setInterval(sumirMensagem, 5000);
     }
@@ -173,5 +204,56 @@
 
   function sumirMensagem() {
     cardErro.style.display = "none";
+  }
+
+  function validarSenha() {
+
+    let senha = senha_input.value;
+
+    senha_valida = true;
+    especial_valido = false;
+
+    carac_especiais.innerHTML = `<span style="color: red">A senha deve ter no mínimo 1 caractere especial</span>`;
+
+    for (let i = 0; i <= senha.length -1; i++) {
+      if (caracteres_especiais.includes(senha[i])) {
+        carac_especiais.innerHTML = `<span style="color: green">A senha deve ter no mínimo 1 caractere especial</span>`;
+        especial_valido = true;
+      }
+    }
+
+    if (senha.length >= 8) {
+        qtd_caracteres.innerHTML = `<span style="color: green">A senha deve ter no mínimo 8 caracteres</span>`;
+    } else {
+        qtd_caracteres.innerHTML = `<span style="color: red">A senha deve ter no mínimo 8 caracteres</span>`;
+        senha_valida = false;
+    }
+    
+    if(senha == senha.toUpperCase()){
+      qtd_minuscula.innerHTML = `<span style="color: red">A senha deve ter no mínimo 1 letra minúscula</span>`;
+      senha_valida = false;
+    } else{
+      qtd_minuscula.innerHTML = `<span style="color: green">A senha deve ter no mínimo 1 letra minúscula</span>`;
+    }
+
+    if(senha == senha.toLowerCase()){
+      qtd_maiuscula.innerHTML = `<span style="color: red">A senha deve ter no mínimo 1 letra maiúscula</span>`;
+      senha_valida = false;
+    } else{
+      qtd_maiuscula.innerHTML = `<span style="color: green">A senha deve ter no mínimo 1 letra maiúscula</span>`;
+    }
+  }
+
+  function confimarSenha(){
+    let senha = senha_input.value;
+    let confimacaoSenha = confirmacao_senha_input.value;
+
+    if(senha == confimacaoSenha){
+      msg_confirmacao_senha.innerHTML = `<span style="color: green">A senha deve ser igual a anterior</span>`;
+      confimacao_valida = true;
+    } else{
+      msg_confirmacao_senha.innerHTML = `<span style="color: red">A senha deve ser igual a anterior</span>`;
+      confimacao_valida = false;
+    }
   }
 </script>

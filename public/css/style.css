@@ -273,3 +273,7 @@ body{
     color: #f5f5f5;
     align-self: center;
 }
+
+#container{
+    height: fit-content;
+}
