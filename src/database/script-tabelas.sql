@@ -6,53 +6,53 @@
 comandos para mysql server
 */
 
-CREATE DATABASE aquatech;
+create database avanti_palestra;
 
-USE aquatech;
+use avanti_palestra;
 
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	razao_social VARCHAR(50),
-	cnpj CHAR(14),
-	codigo_ativacao VARCHAR(50)
+create table usuario(
+id int primary key auto_increment,
+nome varchar(150) not null,
+email varchar(150) not null unique,
+senha varchar(150) not null
 );
 
-CREATE TABLE usuario (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(50),
-	email VARCHAR(50),
-	senha VARCHAR(50),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+create table quiz(
+id int primary key auto_increment,
+titulo varchar(45) not null,
+descricao varchar(200)
 );
 
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+create table questao(
+id int primary key auto_increment,
+numero int not null,
+pergunta varchar(100) not null,
+alternativa_correta char(1) not null,
+alternativa_a varchar(100) not null,
+alternativa_b varchar(100) not null,
+alternativa_c varchar(100) not null,
+alternativa_d varchar(100) not null,
+dificuldade varchar(45) not null,
+fk_quiz int not null,
+constraint cfk_quiz_questao foreign key (fk_quiz) references quiz(id)
 );
 
-create table aquario (
-/* em nossa regra de negócio, um aquario tem apenas um sensor */
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+create table desempenho(
+id int primary key auto_increment,
+qtd_acertos int not null,
+classificacao varchar(45) not null,
+dt_realizacao datetime default now() not null,
+fk_quiz int not null,
+fk_usuario int not null,
+constraint cfk_quiz_desempenho foreign key (fk_quiz) references quiz(id),
+constraint cfk_usuario_desempenho foreign key (fk_usuario) references usuario(id)
 );
 
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
-
-create table medida (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	temperatura DECIMAL,
-	momento DATETIME,
-	fk_aquario INT,
-	FOREIGN KEY (fk_aquario) REFERENCES aquario(id)
+create table resposta(
+id int primary key auto_increment,
+alternativa_selecionada varchar(45) not null,
+fk_questao int not null,
+fk_desempenho int not null,
+constraint cfk_questao_resposta foreign key (fk_questao) references questao(id),
+constraint cfk_desempenho_resposta foreign key (fk_desempenho) references desempenho(id)
 );
-
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
