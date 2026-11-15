@@ -2,11 +2,13 @@ var desempenhoModel = require("../models/desempenhoModel");
 
 function cadastrar(req, res) {
     var nome = req.body.nome;
-    var qtdAcertos = req.body.pontuacaoFinal;
+    var qtdAcertos = req.body.qtdAcertos;
     var classificacao = req.body.classificacao;
-    var fkQuiz = req.body.ID_QUIZ;
-    var fkUsuario = req.body.ID_USUARIO;
-    var respostas = respostasDoUsuario;
+    var fkQuiz = req.body.fkQuiz;
+    var fkUsuario = req.body.fkUsuario;
+    var respostas = req.body.respostas;
+
+ 
 
 
     if (qtdAcertos == undefined) {
