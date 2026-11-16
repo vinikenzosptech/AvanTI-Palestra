@@ -5,28 +5,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exemplo - Quiz</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./../css/estilo.css">
+    <link rel="stylesheet" href="./../css/style.css">
+    <link rel="stylesheet" href="./../css/quiz.css">
+    
 </head>
 
 
 <body onload="onloadEsconder()">
+    <div class="home-header">
+            <img
+            class="imagem-logo"
+            src="../assets/imgs/AvanTI_logo.png"
+            alt="logo"
+            width="330px"
+            />
+            <a class="pagina-estatisticas" href="login.html">Estatísticas</a>
+            <a class="pagina-historia" href="cadastro.html">História</a>
+            <a class="pagina-quiz" href="quiz.html">Quiz</a>
+    </div>
+
+    <div class="divisor"></div>
+
+    <div>
     <div id="pontuacaoEJogo">
         <button id="btnIniciarQuiz" onclick="iniciarQuiz()">INICIAR QUIZ</button>
 
-        <div id="pontuacao" class="flex-colunar width-fit-content border-primary">
+        <div id="container-quiz">
+        <div id="pontuacao" class="flex-colunar width-fit-content">
             <div id="pontuacaoDuranteJogo" class="flex-colunar padding-8">
                 <span class="width-fit-content">Quantidade de acertos: <span id="spanCertas"></span></span>
-                <span class="width-fit-content">Quantidade de erros: <span id="spanErradas"></span></span>
+                <span class="width-fit-content" style="color: #dc3545;">Quantidade de erros: <span id="spanErradas"></span></span>
             </div>
             <div id="pontuacaoFinalJogo" class="flex-colunar padding-8">
                 <span id="pontuacaoFinal" class="width-fit-content">Pontuação Final:
-                    <span id="spanPontuacaoFinal">***</span>
+                    <span id="spanPontuacaoFinal"></span>
                 </span>
-                <span id="msgFinal" class="width-fit-content">***</span>
+                <span id="msgFinal" class="width-fit-content"></span>
             </div>
         </div>
 
-        <div id="jogo" class="width-fit-content flex-colunar border-secondary">
+        <div id="jogo" class="width-fit-content flex-colunar ">
 
             <div id="infoQuestao" class="padding-8">
                 <span>Questão atual: <span id="spanNumeroDaQuestaoAtual"></span> de <span id="qtdQuestoes"></span>
@@ -67,7 +86,9 @@
             </div>
 
         </div>
+        </div>
     </div>
+    
 </body>
 
 </html>

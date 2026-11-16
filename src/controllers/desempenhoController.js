@@ -22,11 +22,16 @@ function cadastrar(req, res) {
     } else if(respostas == undefined){
         res.status(400).send("As respostas estão undefined!");
     } else{
-        desempenhoModel.cadastrar(qtdAcertos, classificacao, fkQuiz, fkUsuario, respostas)
+        desempenhoModel.cadastrar(qtdAcertos, classificacao, fkQuiz, fkUsuario)
         .then(
             function(resultado) {
-                res.json(resultado);
-    }).catch(
+                var idDesempenho = resultado.insertId;
+                return desempenhoModel.cadastrarRespostas(idDesempenho, respostas);
+    }).then(
+        function(resultado){
+            res.json(resultado);
+            
+        }).catch(
         function(erro){
             console.log(erro);
             console.log("Houve um erro ao realizar o cadastro de desempenho! Erro: ", erro.sqlMessage);
