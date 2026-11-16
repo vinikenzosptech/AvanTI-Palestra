@@ -75,11 +75,10 @@
     const ID_QUIZ = 1                          
     const ID_USUARIO = sessionStorage.ID_USUARIO 
 
+    // variáveis globais        
     let listaDeQuestoes = []
-
     let respostasDoUsuario = []
     let classificacaoFinal = ""
-
     let numeroDaQuestaoAtual = 0
     let pontuacaoFinal = 0
     let tentativaIncorreta = 0
@@ -93,18 +92,17 @@
         document.getElementById('jogo').style.display = "none"
     }
 
-    // função assincrona para buscar as questões que virão do banco
     async function iniciarQuiz() {
         try {
             const resposta = await fetch(`/questoes/listar/${ID_QUIZ}`)
 
-            if (!resposta.ok) {
+            if(resposta.ok){
+                const questoesDoBanco = await resposta.json();
+                listaDeQuestoes = questoesDoBanco;
+            } else{
                 throw new Error("Status " + resposta.status)
             }
 
-            const questoesDoBanco = await resposta.json()
-
-            listaDeQuestoes = questoesDoBanco.sort((a, b) => a.numero - b.numero) // ordena as questões de acordo com o número de cada uma
         } catch (erro) {
             console.log(erro)
             alert("Não foi possível carregar as questões. Tente novamente.")
@@ -112,11 +110,11 @@
         }
 
         if (listaDeQuestoes.length == 0) {
-            alert("Este quiz ainda não possui questões.")
+            alert("O quiz ainda não possui questões.")
             return
         }
 
-        quantidadeDeQuestoes = listaDeQuestoes.length // atualiza a quantidade de questões depois de carregar
+        quantidadeDeQuestoes = listaDeQuestoes.length
 
         document.getElementById('pontuacao').style.display = "flex"
         document.getElementById('jogo').style.display = "flex"
@@ -135,7 +133,9 @@
         habilitarAlternativas(true)
         const questaoAtual = listaDeQuestoes[index]
         numeroDaQuestaoAtual = index
-        document.getElementById("spanNumeroDaQuestaoAtual").innerHTML = Number(index) + 1
+        console.log("questaoAtual")
+        console.log(questaoAtual)
+        document.getElementById("spanNumeroDaQuestaoAtual").innerHTML = Number(index) + 1 // ajustando porque o index começa em 0
         document.getElementById("spanQuestaoExibida").innerHTML = questaoAtual.pergunta;
         document.getElementById("labelOpcaoUm").innerHTML = questaoAtual.alternativa_a;
         document.getElementById("labelOpcaoDois").innerHTML = questaoAtual.alternativa_b;
@@ -144,7 +144,7 @@
     }
 
     function submeter() {
-        const options = document.getElementsByName("option");
+        const options = document.getElementsByName("option"); // recupera alternativas no html
 
         let hasChecked = false  // verifica se tem algum option marcado, se tiver ele habilita e sai do for
         for (let i = 0; i < options.length; i++) {
@@ -169,7 +169,7 @@
     function habilitarAlternativas(trueOrFalse) {
         let opcaoEscolhida = trueOrFalse ? false : true //if-else de uma linha só, se for true retorna (false) se for false retorna (true). é assim porque o radius usa o valor invertido para habilitar ou desabilitar o clique
 
-        primeiraOpcao.disabled = opcaoEscolhida // se ele for a opção escolhida ele fica ele não pode ser clicável outra vez
+        primeiraOpcao.disabled = opcaoEscolhida // se ele for a opção escolhida fica ele não pode ser clicável outra vez
         segundaOpcao.disabled = opcaoEscolhida
         terceiraOpcao.disabled = opcaoEscolhida
         quartaOpcao.disabled = opcaoEscolhida
@@ -193,31 +193,35 @@
     }
 
     function tentarNovamente() {
+        // atualiza a página
         window.location.reload()
     }
 
     function checarResposta() {
-    const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual]
-    const respostaQuestaoAtual = questaoAtual.alternativa_correta 
-    const options = document.getElementsByName("option");
+    const questaoAtual = listaDeQuestoes[numeroDaQuestaoAtual]  // questão atual 
+    const respostaQuestaoAtual = questaoAtual.alternativa_correta // qual é a resposta correta da questão atual
 
-    options.forEach((option) => { // vai registrar na lista a resposta do usuário para a questão
-        if (option.checked) {
+    const options = document.getElementsByName("option"); // recupera alternativas no html
+
+    for(let i = 0; i <= options.length -1; i++){
+        if (options[i].checked) {
             respostasDoUsuario.push({
                 fkQuestao: questaoAtual.id,
-                alternativaSelecionada: option.value 
+                alternativaSelecionada: options[i].value 
             })
-        }
-    })
+        }    
+    }
 
     let alternativaCorreta = null
 
     options.forEach((option) => {
-        if (option.value === respostaQuestaoAtual) { // faz um loop em toda as opções e compara se o value é igual a marcada como correta no banco, quando encontrar atribui na variavel alternativaCorreta
-            alternativaCorreta = option.labels[0].id
-        }
-    })
+            if (option.value === respostaQuestaoAtual) {
+                console.log("alternativaCorreta está no componente: " + alternativaCorreta)
+                alternativaCorreta = option.labels[0].id
+            }
+        })
 
+    // verifica se resposta assinalada é correta
     options.forEach((option) => {
         if (option.checked === true && option.value === respostaQuestaoAtual) {
             document.getElementById(alternativaCorreta).classList.add("text-success-with-bg")
@@ -290,28 +294,32 @@
     }
 
     async function salvarDesempenho() {
-        try {
-            const resposta = await fetch("/desempenhos/cadastrar", {
+        fetch("/desempenhos/cadastrar", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                     qtdAcertos: pontuacaoFinal,
                     classificacao: classificacaoFinal,
                     fkQuiz: ID_QUIZ,
                     fkUsuario: ID_USUARIO,
                     respostas: respostasDoUsuario
-                })
+                }),
             })
+             .then(function (resposta) {
+                console.log("resposta: ", resposta);
 
-            if (!resposta.ok) {
-                throw new Error("Status " + resposta.status)
+            if (resposta.ok) {
+                console.log("Desempenho salvo com sucesso!")
+            } else{
+                throw "Houve um erro ao tentar realizar o cadastro!";
             }
-
-            console.log("Desempenho salvo com sucesso!")
-        } catch (erro) {
+         })
+        .catch (function (erro) {
             console.log(erro)
-            console.log(`${respostasDoUsuario}`)
+            console.log(respostasDoUsuario)
             alert("Seu resultado não pôde ser salvo.")
-        }
+        });
     }
 </script>
