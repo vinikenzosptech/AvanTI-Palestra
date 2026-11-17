@@ -142,7 +142,6 @@ body {
 
 .login {
   height: auto;
-  background-image: url('../assets/imgs/bg-jelly-fish-para-home.png');
   background-size: cover;
 }
 
@@ -251,13 +250,14 @@ body {
 .card_erro {
   display: none;
   background-color: #fff;
-  color: black;
+  color: #004d2b;
   width: 230px;
   position: fixed;
   border-radius: 4px;
-  border: #ED145B 3px solid;
+  border: #947d3b 3px solid;
   padding: 10px;
-  margin-right: 10%;
+  margin-right: 8%;
+  margin-top: 2%;
 }
 
 .card_erro #mensagem_erro{
