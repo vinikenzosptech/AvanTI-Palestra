@@ -10,30 +10,35 @@
     <link rel="stylesheet" href="./../css/home_quiz.css">
 </head>
 <body>
-    <div class="home-header">
+    <div class="home-header" style="height: 80px;">
             <img
             class="imagem-logo"
             src="../assets/imgs/AvanTI_logo.png"
             alt="logo"
-            width="330px"
+            width="250px"
+            height="50px"
             />
-            <a class="pagina-estatisticas" href="login.html">Estatísticas</a>
+            <a class="pagina-estatisticas" href="login.html" style="font-size: large;">Estatísticas</a>
 
-            <select class="pagina-historia" style="border: none; padding: 13px;" onchange="if (this.value) window.location.href = this.value;">
-                <option value="" class="option-historia" style="display: none;">História</option>
-                <option class="option-historia" value="../historia/historia_geral.html">História-Geral</option>
-                <option class="option-historia"  value="../historia/historia_libertadores.html">História-Libertadores</option>
-                <option class="option-historia"  value="../historia/historia_nacional.html">História-Nacional</option>
+            <select class="pagina-historia" style="border: none; padding: 13px; font-size: large;" onchange="if (this.value) window.location.href = this.value;">
+                <option value="" class="option-historia" style="display: none; font-size: large;">História</option>
+                <option class="option-historia" value="../historia/historia_geral.html" style="font-size: large;">História-Geral</option>
+                <option class="option-historia"  value="../historia/historia_libertadores.html" style="font-size: large;">História-Libertadores</option>
+                <option class="option-historia"  value="../historia/historia_nacional.html" style="font-size: large;">História-Nacional</option>
             </select>
-            <a class="pagina-quiz" href="./../quiz/home_quiz.html">Quiz</a>
+            <a class="pagina-quiz" href="./../quiz/home_quiz.html" style="font-size: large;">Quiz</a>
     </div>
 
     <div class="divisor">
 
     </div>
 
+    
+
     <div class="container">
-        <div class="quiz-card">
+        <div id="frase-tema-quiz">Selecione o tema do Quiz!</div>
+        <div class="container-cards">
+            <div class="quiz-card">
             <a style="text-decoration: none; color: #004d2b;" href="../quiz/quiz_geral.html"><img style="border-radius: 12px;" src=".././assets/imgs/arrancada-heroica.png" alt="" width="100%" height="200px">História Geral</a>
         </div>
         <div class="quiz-card">
@@ -42,6 +47,8 @@
         <div class="quiz-card">
             <a style="text-decoration: none; color: #004d2b;" href="../quiz/quiz_nacional.html"><img style="border-radius: 12px;" src=".././assets/imgs/copa-brasil.png" alt="" width="100%" height="200px">Títulos Nacionais</a>
         </div>
+        </div>
+        
     </div>
 </body>
 </html>
