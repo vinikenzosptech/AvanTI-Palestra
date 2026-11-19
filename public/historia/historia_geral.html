@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>História-Geral</title>
     <link rel="stylesheet" href="./../css/style.css">
     <link rel="stylesheet" href="./../css/minha_historia.css">
     <link rel="stylesheet" href="./../css/historia.css">
@@ -17,7 +17,13 @@
             width="330px"
             />
             <a class="pagina-estatisticas" href="login.html">Estatísticas</a>
-            <a class="pagina-historia" href="cadastro.html">História</a>
+
+            <select class="pagina-historia" style="border: none; padding: 13px;" onchange="if (this.value) window.location.href = this.value;">
+                <option value="" style="display: none;">História</option>
+                <option class="option-historia" value="historia_geral.html">História-Geral</option>
+                <option class="option-historia"  value="historia_libertadores.html">História-Libertadores</option>
+                <option class="option-historia"  value="historia_nacional.html">História-Nacional</option>
+            </select>
             <a class="pagina-quiz" href="quiz.html">Quiz</a>
     </div>
 
@@ -63,16 +69,35 @@
             <h2>As Academias de Futebol (1960–1990)</h2>
             <br>
             <div class="historia-conteudo">
-                <span class="span-historia">Durante as décadas de 1960 e 1970, o Palmeiras formou equipes que ficaram conhecidas como Primeira Academia de Futebol, reconhecidas pela qualidade técnica e pelo futebol coletivo. Entre seus principais jogadores estavam Ademir da Guia, Dudu e Luís Pereira.
+                <span class="span-historia">Durante as décadas de 1960 e 1970, o Palmeiras viveu uma de suas fases mais marcantes, formando equipes conhecidas como Primeira e Segunda Academia de Futebol. A Primeira Academia destacou-se na década de 1960, com jogadores como Ademir da Guia e Dudu, reconhecidos pela qualidade técnica e pelo futebol coletivo.
                     <br>
                     <br>
-                    Um episódio marcante dessa geração aconteceu em 7 de setembro de 1965, quando o Palmeiras foi escolhido para representar oficialmente a Seleção Brasileira na inauguração do Estádio Mineirão. Vestindo o uniforme da Seleção, enfrentou o Uruguai e venceu por 3 a 0, em um reconhecimento da força do clube no futebol nacional.
+                    Um episódio histórico aconteceu em 7 de setembro de 1965, quando o Palmeiras foi escolhido para representar oficialmente a Seleção Brasileira na inauguração do Estádio Mineirão. Vestindo o uniforme da Seleção, enfrentou o Uruguai e venceu por 3 a 0.
                     <br>
                     <br>
-                Na década de 1990, surgiu a Segunda Academia, impulsionada pela parceria com a empresa Parmalat. Com jogadores como Evair, Edmundo e Rivaldo, o clube voltou a conquistar grandes títulos, incluindo o Campeonato Brasileiro de 1993 e 1994 e a Libertadores de 1999.    
+                Na década de 1970, surgiu a Segunda Academia, que manteve a tradição de excelência da geração anterior, com grandes jogadores como Leão, Luís Pereira, César Maluco e Jorge Mendonça. Essa equipe conquistou importantes títulos brasileiros e consolidou ainda mais o prestígio do clube.
                 </span>
                 <br>
                 <img class="historia-img-card" src=".././assets/imgs/primeira-academia.png" alt="imagem_origem" height="300px" width="450px" >
+            </div>
+        </div>
+        <br>
+        <br>
+        <div id="secao-historia">
+            <br>
+            <h2>A era Parmalat (1990)</h2>
+            <br>
+            <div class="historia-conteudo">
+                <span class="span-historia">Após um período de dificuldades e sem grandes conquistas, o Palmeiras iniciou uma nova fase em 1992, com uma parceria histórica com a empresa italiana Parmalat. O investimento possibilitou a contratação de grandes jogadores e a formação de equipes competitivas.
+                    <br>
+                    <br>
+                    Sob o comando de Vanderlei Luxemburgo, o clube encerrou um jejum de 16 anos sem títulos expressivos ao conquistar o Campeonato Paulista de 1993. Naquele mesmo ano, voltou a vencer o Campeonato Brasileiro, repetindo o feito em 1994.
+                    <br>
+                    <br>
+               Com jogadores como Evair, Edmundo, Rivaldo e César Sampaio, o Palmeiras também conquistou a Copa do Brasil e a Copa Mercosul em 1998, além da Libertadores em 1999. Essa geração marcou o retorno do clube ao protagonismo nacional e internacional.
+                </span>
+                <br>
+                <img class="historia-img-card" src=".././assets/imgs/parmalat.png" alt="imagem_origem" height="300px" width="450px" >
             </div>
         </div>
         <br>

@@ -1,3 +1,20 @@
+#container{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url('../assets/imgs/historia-geral-bg.png');
+    background-size: 100% auto;
+background-position: center;
+}
+
+.span-historia{
+    color: #004d2b;
+    font-size: x-large;
+}
+
+
 .pagina-estatisticas{
     background-color: #004d2b;
     border-color: #947d3b;
@@ -44,6 +61,8 @@
 
 #secao-historia{
     justify-content: flex-start;
+    background-color: #f5f5f5;
+    color: #004d2b;
 }
 
 .historia-conteudo{
@@ -54,7 +73,7 @@
 }
 
 h2{
-    color: #f5f5f5;
+    color: #004d2b;
 }
 
 .historia-conteudo{
@@ -65,3 +84,7 @@ h2{
     align-self: center;
 }
 
+.option-historia{
+    background-color: #f5f5f5;
+    color: #004d2b;
+}
