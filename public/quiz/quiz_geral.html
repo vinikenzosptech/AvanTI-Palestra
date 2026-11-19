@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exemplo - Quiz</title>
+    <title>Quiz | História-Geral</title>
     <link rel="stylesheet" href="./../css/estilo.css">
     <link rel="stylesheet" href="./../css/style.css">
     <link rel="stylesheet" href="./../css/quiz.css">
@@ -21,8 +21,14 @@
             width="330px"
             />
             <a class="pagina-estatisticas" href="login.html">Estatísticas</a>
-            <a class="pagina-historia" href="cadastro.html">História</a>
-            <a class="pagina-quiz" href="quiz.html">Quiz</a>
+
+            <select class="pagina-historia" style="border: none; padding: 13px;" onchange="if (this.value) window.location.href = this.value;">
+                <option value="" class="option-historia" style="display: none;">História</option>
+                <option class="option-historia" value="../historia/historia_geral.html">História-Geral</option>
+                <option class="option-historia"  value="../historia/historia_libertadores.html">História-Libertadores</option>
+                <option class="option-historia"  value="../historia/historia_nacional.html">História-Nacional</option>
+            </select>
+            <a class="pagina-quiz" href="./../quiz/home_quiz.html">Quiz</a>
     </div>
 
     <div class="divisor"></div>
