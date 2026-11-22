@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./../css/quiz.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body onload="obterClassificacao()">
+<body onload="obterClassificacao(), obterTotalQuizzes(usuario_id)">
     <div id="container-principal">
         <div class="home-header" style="height: 80px;">
             <img
@@ -47,7 +47,7 @@
 
             <div class="card-kpi">
                 <img src="./../assets/imgs/lista.png" alt="img_lista" height="40px" width="45px">
-                <span class="indicador-kpi">15</span>
+                <span class="indicador-kpi"><span id="qtd_quiz_usuario">15</span></span>
                 <span class="titulo-kpi">Quizzes</span>
             </div>
 
@@ -215,10 +215,11 @@
 
 
   b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+  let usuario_id = sessionStorage.ID_USUARIO;
 
   function obterClassificacao(idUsuario){
 
-    let usuario_id = sessionStorage.ID_USUARIO;
+    
     let posicao_usuario = 0;
 
     fetch(`/desempenhos/obterClassificacao`, { cache: 'no-store' }).then(function (response) {
@@ -242,6 +243,26 @@
             .catch(function (error) {
                 console.error(`Erro na obtenção dos dados p/ kpi: ${error.message}`);
             });        
+}
+
+function obterTotalQuizzes(idUsuario){
+
+    idUsuario = usuario_id;
+    
+    fetch(`/desempenhos/obterTotalQuizzes/${idUsuario}`, {cache: 'no-store'}).then(function(response){
+        if(response.ok){
+            response.json().then(function(resposta){
+                console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                let qtd_quizz = resposta[0].total_quiz;
+                document.getElementById('qtd_quiz_usuario').innerHTML = `${qtd_quizz}`
+            });
+        } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+    })
+        .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ quantidade de quiz: ${error.message}`);
+            });   
 }
   
 

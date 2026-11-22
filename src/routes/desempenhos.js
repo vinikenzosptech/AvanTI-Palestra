@@ -11,5 +11,9 @@ router.get("/obterClassificacao", function(req, res){
     desempenhoController.obterClassificacao(req, res);
 })
 
+router.get("/obterTotalQuizzes/:idUsuario", function(req, res){
+    desempenhoController.obterQuizzes(req, res);
+})
+
 
 module.exports = router;

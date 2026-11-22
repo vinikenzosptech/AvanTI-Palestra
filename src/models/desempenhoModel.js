@@ -35,9 +35,22 @@ function obterClassificacao(){
         return database.executar(instrucaoSql);
 }
 
+function obterQuizzes(fkUsuario){
+    var instrucaoSql = `
+        SELECT 
+        count(id) as total_quiz
+        FROM desempenho
+        WHERE fk_usuario = ${fkUsuario}
+    `
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+        return database.executar(instrucaoSql);
+}
+
 
 module.exports = {
     cadastrar,
     cadastrarRespostas,
-    obterClassificacao
+    obterClassificacao,
+    obterQuizzes
 };
