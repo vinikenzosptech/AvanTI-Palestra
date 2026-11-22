@@ -1,7 +1,6 @@
 var desempenhoModel = require("../models/desempenhoModel");
 
 function cadastrar(req, res) {
-    var nome = req.body.nome;
     var qtdAcertos = req.body.qtdAcertos;
     var classificacao = req.body.classificacao;
     var fkQuiz = req.body.fkQuiz;
@@ -75,8 +74,25 @@ function obterQuizzes(req, res){
         });
 }
 
+function obterAproveitamento(req, res){
+    var fkUsuario = req.params.idUsuario;
+
+    desempenhoModel.obterAproveitamento(fkUsuario).then(function(resultado){
+        if(resultado.length > 0){
+            res.status(200).json(resultado);
+        } else{
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os quizzes do usuário.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    })
+}
+
 module.exports = {
     cadastrar,
     obterClassificacao,
-    obterQuizzes
+    obterQuizzes,
+    obterAproveitamento
 }

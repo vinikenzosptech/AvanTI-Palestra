@@ -47,10 +47,29 @@ function obterQuizzes(fkUsuario){
         return database.executar(instrucaoSql);
 }
 
+function obterAproveitamento(fkUsuario){
+    var instrucaoSql = `
+        SELECT
+        d.qtd_acertos,
+        d.fk_quiz,
+        d.id,
+        count(r.id) as quantidade_questoes
+        FROM desempenho d
+        JOIN resposta r
+        ON r.fk_desempenho = d.id
+        WHERE d.fk_usuario = ${fkUsuario}
+        GROUP BY d.fk_quiz, d.qtd_acertos, d.id;
+        `
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+        return database.executar(instrucaoSql);    
+}
+
 
 module.exports = {
     cadastrar,
     cadastrarRespostas,
     obterClassificacao,
-    obterQuizzes
+    obterQuizzes,
+    obterAproveitamento
 };

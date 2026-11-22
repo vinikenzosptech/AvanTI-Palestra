@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./../css/quiz.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body onload="obterClassificacao(), obterTotalQuizzes(usuario_id)">
+<body onload="obterClassificacao(), obterTotalQuizzes(usuario_id), obterAproveitamento(usuario_id)">
     <div id="container-principal">
         <div class="home-header" style="height: 80px;">
             <img
@@ -53,7 +53,7 @@
 
             <div class="card-kpi">
                 <img src="./../assets/imgs/alvo.png" alt="img_alvo" height="40px" width="45px">
-                <span class="indicador-kpi">87%</span>
+                <span class="indicador-kpi"><span id="porcentagem_aproveitamento">87%</span></span>
                 <span class="titulo-kpi">Aproveitamento</span>
             </div>
         </div>
@@ -265,6 +265,27 @@ function obterTotalQuizzes(idUsuario){
             });   
 }
   
+function obterAproveitamento(idUsuario){
+    idUsuario = usuario_id;
+
+    fetch(`/desempenhos/obterAproveitamento/${idUsuario}`, {cache: 'no-store'}).then(function(response){
+        if(response.ok){
+            response.json().then(function(resposta){
+                console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                let qtd_acertos = 0;
+                let qtd_questoes = 0;
+                for(let i = 0; i <= resposta.length -1; i++){
+                    qtd_acertos += resposta[i].qtd_acertos;
+                    qtd_questoes += resposta[i].quantidade_questoes;
+                }
+
+                let aproveitamento = (qtd_acertos * 100) / qtd_questoes;
+
+                document.getElementById('porcentagem_aproveitamento').innerHTML = `${aproveitamento.toFixed(2)}%`
+            })
+        }
+    })
+}
 
 </script>
 </html>

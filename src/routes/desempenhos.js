@@ -9,11 +9,15 @@ router.post("/cadastrar", function (req, res) {
 
 router.get("/obterClassificacao", function(req, res){
     desempenhoController.obterClassificacao(req, res);
-})
+});
 
 router.get("/obterTotalQuizzes/:idUsuario", function(req, res){
     desempenhoController.obterQuizzes(req, res);
-})
+});
+
+router.get("/obterAproveitamento/:idUsuario", function(req, res){
+    desempenhoController.obterAproveitamento(req, res);
+});
 
 
 module.exports = router;
