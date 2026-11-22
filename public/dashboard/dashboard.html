@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./../css/quiz.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body onload="obterClassificacao(), obterTotalQuizzes(usuario_id), obterAproveitamento(usuario_id), obterDadosGrafico(usuario_id)">
+<body onload="obterClassificacao(), obterTotalQuizzes(usuario_id), obterAproveitamento(usuario_id), obterDadosGrafico(usuario_id), obterRanking()">
     <div id="container-principal">
         <div class="home-header" style="height: 80px;">
             <img
@@ -19,7 +19,7 @@
             width="250px"
             height="50px"
             />
-            <a class="pagina-estatisticas" href="login.html" style="font-size: large;">Estatísticas</a>
+            <a class="pagina-estatisticas" href="dashboard.html" style="font-size: large;background-color: #f5f5f5; color: #004d2b; border-radius: 5px;">Estatísticas</a>
 
             <select class="pagina-historia" style="border: none; padding: 13px; font-size: large;" onchange="if (this.value) window.location.href = this.value;">
                 <option value="" class="option-historia" style="display: none; font-size: large;">História</option>
@@ -28,6 +28,7 @@
                 <option class="option-historia"  value="../historia/historia_nacional.html" style="font-size: large;">História-Nacional</option>
             </select>
             <a class="pagina-quiz" href="./../quiz/home_quiz.html" style="font-size: large;">Quiz</a>
+            <a class="pagina-quiz" href="./../login.html" style="font-size: large; color: #cc0000;">Sair</a>
         </div>
 
         <div class="divisor"></div>
@@ -74,46 +75,12 @@
                 <div class="titulo-grafico" id="ranking">
                     Ranking
                 </div>
-                <div class="posicao-ranking">
-                    <div class="posicao-numero">
-                        1º
-                    </div>
-                    <div class="posicao-info-ranking">
-                        <span class="nome-jogador-ranking">Jogador 1</span>
-                        <span class="frase-media-ranking">Média de acertos</span>
-                        <span class="nota-media-ranking">10</span>
-                    </div>
+                <div id="cards-ranking">
+                
                 </div>
-                <div class="posicao-ranking">
-                    <div class="posicao-numero">
-                        1º
-                    </div>
-                    <div class="posicao-info-ranking">
-                        <span class="nome-jogador-ranking">Jogador 1</span>
-                        <span class="frase-media-ranking">Média de acertos</span>
-                        <span class="nota-media-ranking">10</span>
-                    </div>
-                </div>
-                <div class="posicao-ranking">
-                    <div class="posicao-numero">
-                        1º
-                    </div>
-                    <div class="posicao-info-ranking">
-                        <span class="nome-jogador-ranking">Jogador 1</span>
-                        <span class="frase-media-ranking">Média de acertos</span>
-                        <span class="nota-media-ranking">10</span>
-                    </div>
-                </div>
-                <div class="posicao-ranking">
-                    <div class="posicao-numero">
-                        1º
-                    </div>
-                    <div class="posicao-info-ranking">
-                        <span class="nome-jogador-ranking">Jogador 1</span>
-                        <span class="frase-media-ranking">Média de acertos</span>
-                        <span class="nota-media-ranking">10</span>
-                    </div>
-                </div>
+                
+                
+                
             </div>
 
         </div>
@@ -254,6 +221,47 @@
             });        
 }
 
+function obterRanking(){
+    let posicao_usuario = 0;
+    
+    fetch(`/desempenhos/obterClassificacao`, {cache: 'no-store'}).then(function(response){
+        if (response.ok){
+            response.json().then(function(resposta){
+                console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                for(let i = 0; i <= resposta.length-1; i++){
+                    if(resposta[i].id == usuario_id){
+                        document.getElementById('cards-ranking').innerHTML += `
+                        <div class="posicao-ranking-usuario">
+                            <div class="posicao-numero">
+                                ${i + 1}º
+                            </div>
+                            <div class="posicao-info-ranking">
+                                <span class="nome-jogador-ranking">${resposta[i].nome}</span>
+                                <span class="frase-media-ranking">Média de acertos</span>
+                                <span class="nota-media-ranking">${resposta[i].media_acertos}</span>
+                            </div>
+                        </div>
+                        `
+                    } else{
+                        document.getElementById('cards-ranking').innerHTML += `
+                        <div class="posicao-ranking">
+                            <div class="posicao-numero">
+                                ${i + 1}º
+                            </div>
+                            <div class="posicao-info-ranking">
+                                <span class="nome-jogador-ranking">${resposta[i].nome}</span>
+                                <span class="frase-media-ranking">Média de acertos</span>
+                                <span class="nota-media-ranking">${resposta[i].media_acertos}</span>
+                            </div>
+                        </div>
+                        `
+                    }
+                }
+            })
+        }
+    })
+}
+
 function obterTotalQuizzes(idUsuario){
 
     idUsuario = usuario_id;
@@ -327,6 +335,8 @@ function obterDadosGrafico(idUsuario){
         }
     })
 }
+
+
 
 </script>
 </html>

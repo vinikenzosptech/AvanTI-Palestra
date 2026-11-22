@@ -24,4 +24,5 @@ router.get("/obterDadosGrafico/:idUsuario", function(req, res){
 })
 
 
+
 module.exports = router;
