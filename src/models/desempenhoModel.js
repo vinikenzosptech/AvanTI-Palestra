@@ -65,11 +65,22 @@ function obterAproveitamento(fkUsuario){
         return database.executar(instrucaoSql);    
 }
 
+function obterDadosGrafico(fkUsuario){
+    var instrucaoSql = `
+        SELECT qtd_acertos, DATE_FORMAT(dt_realizacao, '%d/%m/%Y %H:%i:%s') AS data_realizacao, fk_quiz, fk_usuario
+        FROM desempenho
+        WHERE fk_usuario = ${fkUsuario}
+    `
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+        return database.executar(instrucaoSql); 
+}
+
 
 module.exports = {
     cadastrar,
     cadastrarRespostas,
     obterClassificacao,
     obterQuizzes,
-    obterAproveitamento
+    obterAproveitamento,
+    obterDadosGrafico
 };

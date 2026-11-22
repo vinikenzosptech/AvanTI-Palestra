@@ -19,5 +19,9 @@ router.get("/obterAproveitamento/:idUsuario", function(req, res){
     desempenhoController.obterAproveitamento(req, res);
 });
 
+router.get("/obterDadosGrafico/:idUsuario", function(req, res){
+    desempenhoController.obterDadosGrafico(req, res)
+})
+
 
 module.exports = router;

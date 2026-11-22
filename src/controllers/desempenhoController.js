@@ -90,9 +90,26 @@ function obterAproveitamento(req, res){
     })
 }
 
+function obterDadosGrafico(req, res){
+    var fkUsuario = req.params.idUsuario;
+
+    desempenhoModel.obterDadosGrafico(fkUsuario).then(function(resultado){
+        if(resultado.length > 0){
+            res.status(200).json(resultado);
+        } else{
+            res.status(204).send("Nenhum resultado encontrado!")
+        }
+    }).catch(function(erro){
+        console.log(erro);
+        console.log("Houve um erro ao buscar os quizzes do usuário.", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    })
+}
+
 module.exports = {
     cadastrar,
     obterClassificacao,
     obterQuizzes,
-    obterAproveitamento
+    obterAproveitamento,
+    obterDadosGrafico
 }
