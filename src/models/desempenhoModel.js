@@ -18,8 +18,26 @@ function cadastrarRespostas(fkDesempenho, respostas){
     return database.executar(instrucao);
 }
 
+function obterClassificacao(){
+    var instrucaoSql = `
+        SELECT
+        u.id,
+        u.nome,
+        ROUND(AVG(d.qtd_acertos), 2) AS media_acertos
+        FROM usuario u
+        JOIN desempenho d
+        ON d.fk_usuario = u.id
+        GROUP BY u.id, u.nome
+        ORDER BY media_acertos DESC;
+    `
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+        return database.executar(instrucaoSql);
+}
+
 
 module.exports = {
     cadastrar,
-    cadastrarRespostas
+    cadastrarRespostas,
+    obterClassificacao
 };

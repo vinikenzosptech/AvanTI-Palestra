@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./../css/quiz.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body onload="obterClassificacao()">
     <div id="container-principal">
         <div class="home-header" style="height: 80px;">
             <img
@@ -33,7 +33,7 @@
         <div class="divisor"></div>
 
         <div id="container-nome">
-            <span style="font-size: large; font-weight: bold;">Olá, Vinícius</span>
+            <span style="font-size: large; font-weight: bold;">Olá, <span id="b_usuario">usuário</span></span>
             <br>
             <span style="font-size: medium;">Confira seu desempenho e evolução nos quizzes.</span>
         </div>
@@ -41,7 +41,7 @@
         <div id="container-kpi">
             <div class="card-kpi">
                 <img class="img-kpi" src="./../assets/imgs/trofeu.png" alt="img_trofeu" height="40px" width="40px">
-                <span class="indicador-kpi">3º</span>
+                <span class="indicador-kpi" id="posicao-ranking-kpi">3º</span>
                 <span class="titulo-kpi">Ranking</span>
             </div>
 
@@ -212,6 +212,38 @@
       
     },
   );
+
+
+  b_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+  function obterClassificacao(idUsuario){
+
+    let usuario_id = sessionStorage.ID_USUARIO;
+    let posicao_usuario = 0;
+
+    fetch(`/desempenhos/obterClassificacao`, { cache: 'no-store' }).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (resposta) {
+                    console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                    for(let i = 0; i <= resposta.length -1; i++){
+                        if(resposta[i].id == usuario_id){
+                            posicao_usuario = i + 1
+                            break;
+                        }
+                    }
+
+                    document.getElementById('posicao-ranking-kpi').innerHTML = `${posicao_usuario}º`
+
+                });
+            } else {
+                console.error('Nenhum dado encontrado ou erro na API');
+            }
+        })
+            .catch(function (error) {
+                console.error(`Erro na obtenção dos dados p/ kpi: ${error.message}`);
+            });        
+}
+  
 
 </script>
 </html>
