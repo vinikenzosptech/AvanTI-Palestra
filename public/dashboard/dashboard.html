@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="./../css/dashboards.css">
     <link rel="stylesheet" href="./../css/style.css">
     <link rel="stylesheet" href="./../css/quiz.css">
@@ -19,7 +19,7 @@
             width="250px"
             height="50px"
             />
-            <a class="pagina-estatisticas" href="dashboard.html" style="font-size: large;background-color: #f5f5f5; color: #004d2b; border-radius: 5px;">Estatísticas</a>
+            <a class="pagina-estatisticas" href="dashboard.html" style="font-size: large;background-color: #f5f5f5; color: #004d2b; border-radius: 5px; box-shadow: inset 0 0 0 2px #947d3b;">Estatísticas</a>
 
             <select class="pagina-historia" style="border: none; padding: 13px; font-size: large;" onchange="if (this.value) window.location.href = this.value;">
                 <option value="" class="option-historia" style="display: none; font-size: large;">História</option>
@@ -34,7 +34,7 @@
         <div class="divisor"></div>
 
         <div id="container-nome">
-            <span style="font-size: large; font-weight: bold;">Olá, <span id="b_usuario">usuário</span></span>
+            <span style="font-size: large; font-weight: bold;">Olá, <span id="b_usuario"></span></span>
             <br>
             <span style="font-size: medium;">Confira seu desempenho e evolução nos quizzes.</span>
         </div>
@@ -42,19 +42,19 @@
         <div id="container-kpi">
             <div class="card-kpi">
                 <img class="img-kpi" src="./../assets/imgs/trofeu.png" alt="img_trofeu" height="40px" width="40px">
-                <span class="indicador-kpi" id="posicao-ranking-kpi">3º</span>
+                <span class="indicador-kpi" id="posicao-ranking-kpi"></span>
                 <span class="titulo-kpi">Ranking</span>
             </div>
 
             <div class="card-kpi">
                 <img src="./../assets/imgs/lista.png" alt="img_lista" height="40px" width="45px">
-                <span class="indicador-kpi"><span id="qtd_quiz_usuario">15</span></span>
+                <span class="indicador-kpi"><span id="qtd_quiz_usuario"></span></span>
                 <span class="titulo-kpi">Quizzes</span>
             </div>
 
             <div class="card-kpi">
                 <img src="./../assets/imgs/alvo.png" alt="img_alvo" height="40px" width="45px">
-                <span class="indicador-kpi"><span id="porcentagem_aproveitamento">87%</span></span>
+                <span class="indicador-kpi"><span id="porcentagem_aproveitamento"></span></span>
                 <span class="titulo-kpi">Aproveitamento</span>
             </div>
         </div>
