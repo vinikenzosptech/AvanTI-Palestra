@@ -20,9 +20,12 @@ router.get("/obterAproveitamento/:idUsuario", function(req, res){
 });
 
 router.get("/obterDadosGrafico/:idUsuario", function(req, res){
-    desempenhoController.obterDadosGrafico(req, res)
+    desempenhoController.obterDadosGrafico(req, res);
 })
 
+router.get("/obterHistoricoQuiz/:idUsuario", function(req, res){
+    desempenhoController.obterHistoricoQuiz(req, res);
+})
 
 
 module.exports = router;

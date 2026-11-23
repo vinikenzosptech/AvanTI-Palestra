@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./../css/quiz.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body onload="obterClassificacao(), obterTotalQuizzes(usuario_id), obterAproveitamento(usuario_id), obterDadosGrafico(usuario_id), obterRanking()">
+<body onload="obterClassificacao(), obterTotalQuizzes(usuario_id), obterAproveitamento(usuario_id), obterDadosGrafico(usuario_id), obterRanking(), obterHistoricoQuiz()">
     <div id="container-principal">
         <div class="home-header" style="height: 80px;">
             <img
@@ -88,22 +88,11 @@
             <div class="titulo-grafico" id="historico-quiz">
                 Histórico de quizzes
             </div>
-            <div class="resultados-quiz">
-                <div class="tipo-quiz">
-                    <span >Quiz Geral</span>
-                </div>
-                <div class="desempenho-quiz">
-                    Resultado 100%: Fácil 2 - Médio 2 - Difícil 2
-                </div>
+            <div id="historico-desempenho-usuario">
+                
+
             </div>
-            <div class="resultados-quiz">
-                <div class="tipo-quiz">
-                    <span >Quiz Geral</span>
-                </div>
-                <div class="desempenho-quiz">
-                    Resultado 100%: Fácil 2 - Médio 2 - Difícil 2
-                </div>
-            </div>
+            
                 
             </div>
         </div>
@@ -304,6 +293,41 @@ function obterAproveitamento(idUsuario){
     })
 }
 
+function obterHistoricoQuiz(idUsuario){
+    idUsuario = usuario_id;
+
+    fetch(`/desempenhos/obterHistoricoQuiz/${idUsuario}`, {cache: 'no-store'}).then(function(response){
+        if(response.ok){
+            response.json().then(function(resposta){
+                console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+
+                let aproveitamento = 0;
+                let titulo_quiz = "";
+                let data_realizacao = "";
+                let classificacao = "";
+
+                for(let i = 0; i <= resposta.length - 1; i++){
+                    aproveitamento = (resposta[i].qtd_acertos * 100) / resposta[i].quantidade_questoes;
+                    titulo_quiz = resposta[i].titulo;
+                    data_realizacao = resposta[i].data_realizacao;
+                    classificacao = resposta[i].classificacao;
+                    document.getElementById('historico-desempenho-usuario').innerHTML += `
+                    <div class="resultados-quiz">
+                        <div class="tipo-quiz">
+                            <span >${titulo_quiz}</span>
+                        </div>
+                        <div class="desempenho-quiz">
+                            Data:${data_realizacao} - Resultado:${aproveitamento.toFixed(2)}% - Classificação: ${classificacao}
+                        </div>
+                    </div>
+                    `
+                }
+            })
+        }
+    })
+}
+
+
 function obterDadosGrafico(idUsuario){
     idUsuario = usuario_id;
 
@@ -335,6 +359,8 @@ function obterDadosGrafico(idUsuario){
         }
     })
 }
+
+
 
 
 

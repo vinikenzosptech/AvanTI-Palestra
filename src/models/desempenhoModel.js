@@ -69,7 +69,29 @@ function obterDadosGrafico(fkUsuario){
     var instrucaoSql = `
         SELECT qtd_acertos, DATE_FORMAT(dt_realizacao, '%d/%m/%Y %H:%i:%s') AS data_realizacao, fk_quiz, fk_usuario
         FROM desempenho
-        WHERE fk_usuario = ${fkUsuario}
+        WHERE fk_usuario = ${fkUsuario};
+    `
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+        return database.executar(instrucaoSql); 
+}
+
+function obterHistoricoQuiz(fkUsuario){
+    var instrucaoSql = `
+        SELECT
+        d.qtd_acertos,
+        qz.titulo,
+        count(r.id) as quantidade_questoes,
+        DATE_FORMAT(dt_realizacao, '%d/%m/%Y %H:%i:%s') as data_realizacao,
+        d.classificacao
+        FROM desempenho d
+        LEFT JOIN resposta r
+        ON r.fk_desempenho = d.id
+        JOIN quiz qz
+        ON d.fk_quiz = qz.id
+        WHERE d.fk_usuario = ${fkUsuario}
+        GROUP BY qz.id, d.qtd_acertos, d.id
+        ORDER BY data_realizacao desc
+        ;
     `
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
         return database.executar(instrucaoSql); 
@@ -82,5 +104,6 @@ module.exports = {
     obterClassificacao,
     obterQuizzes,
     obterAproveitamento,
-    obterDadosGrafico
+    obterDadosGrafico,
+    obterHistoricoQuiz
 };
