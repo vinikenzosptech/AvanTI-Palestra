@@ -95,6 +95,13 @@
             </div>
 
         </div>
+        <div class="telaFinalQuiz" id="telaResultado">
+            <h2>Quiz finalizado!</h2>
+            <div class="container-botoes-resultado">
+            <button class="botao-final" onclick="tentarNovamente()">Tentar novamente</button>
+            <button class="botao-final" onclick="window.location.href='./../dashboard/dashboard.html'">Ver estatísticas</button>
+            </div>
+        </div>
         </div>
     </div>
     
@@ -120,6 +127,7 @@
     function onloadEsconder() {
         document.getElementById('pontuacao').style.display = "none"
         document.getElementById('jogo').style.display = "none"
+        document.getElementById('telaResultado').style.display = "none"
     }
 
     async function iniciarQuiz() {
@@ -293,19 +301,19 @@
         const porcentagemFinalDeAcertos = pontuacaoFinal / quantidadeDeQuestoes
 
         if (porcentagemFinalDeAcertos <= 0.3) {
-            textoParaMensagemFinal = "Parece que você não estudou..."
+            textoParaMensagemFinal = "Tá precisando vestir mais a camisa..."
             classComCoresParaMensagemFinal = "text-danger-with-bg"
-            classificacaoFinal = "Iniciante"
+            classificacaoFinal = "Torcedor de mentirinha"
         }
         else if (porcentagemFinalDeAcertos > 0.3 && porcentagemFinalDeAcertos < 0.9) {
-            textoParaMensagemFinal = "Pode melhorar na próxima, hein!"
+            textoParaMensagemFinal = "Tá no caminho, mas ainda não é titular!"
             classComCoresParaMensagemFinal = "text-warning-with-bg"
-            classificacaoFinal = "Intermediário"
+            classificacaoFinal = "Turma do amendoin"
         }
         else if (porcentagemFinalDeAcertos >= 0.9) {
-            textoParaMensagemFinal = "Uau, parabéns!"
+            textoParaMensagemFinal = "10 e Faixa!"
             classComCoresParaMensagemFinal = "text-success-with-bg"
-            classificacaoFinal = "Avançado"
+            classificacaoFinal = "Divino"
         }
 
         textoParaMensagemFinal += "<br> Você acertou " + Math.round((porcentagemFinalDeAcertos) * 100) + "% das questões."
@@ -321,6 +329,9 @@
         btnTentarNovamente.disabled = false
 
         salvarDesempenho() 
+
+        document.getElementById("jogo").style.display = "none";
+        document.getElementById("telaResultado").style.display = "flex";
     }
 
     async function salvarDesempenho() {

@@ -95,6 +95,13 @@
             </div>
 
         </div>
+        <div class="telaFinalQuiz" id="telaResultado">
+            <h2>Quiz finalizado!</h2>
+            <div class="container-botoes-resultado">
+            <button class="botao-final" onclick="tentarNovamente()">Tentar novamente</button>
+            <button class="botao-final" onclick="window.location.href='./../dashboard/dashboard.html'">Ver estatísticas</button>
+            </div>
+        </div>
         </div>
     </div>
     
@@ -120,6 +127,7 @@
     function onloadEsconder() {
         document.getElementById('pontuacao').style.display = "none"
         document.getElementById('jogo').style.display = "none"
+        document.getElementById('telaResultado').style.display = "none"
     }
 
     async function iniciarQuiz() {
@@ -321,6 +329,9 @@
         btnTentarNovamente.disabled = false
 
         salvarDesempenho() 
+
+        document.getElementById("jogo").style.display = "none";
+        document.getElementById("telaResultado").style.display = "flex";
     }
 
     async function salvarDesempenho() {

@@ -42,9 +42,14 @@ body{
 
 #frase-tema-quiz{
     font-size: x-large; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #004d2b;
     background-color: #f5f5f5;
-    border: 1px solid;
+    border: 3px solid;
     border-color: #947d3b;
+    width: 350px;
+    height: 60px;
     border-radius: 5px;
 }
