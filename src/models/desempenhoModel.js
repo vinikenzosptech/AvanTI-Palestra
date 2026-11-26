@@ -9,9 +9,11 @@ function cadastrar(qtd_acertos, classificacao, fkQuiz, fkUsuario) {
 }
 
 function cadastrarRespostas(fkDesempenho, respostas){
-    var dados = respostas.map(function(r) {
-        return `('${r.alternativaSelecionada}',${r.fkQuestao},${fkDesempenho})`;
-    });
+    var dados = [];
+
+    for(let i = 0; i <= respostas.length - 1; i++){
+        dados.push(`('${respostas[i].alternativaSelecionada}',${respostas[i].fkQuestao},${fkDesempenho})`)
+    }
 
     var instrucao = `INSERT INTO resposta (alternativa_selecionada, fk_questao, fk_desempenho) VALUES ${dados.join(", ")};`;
     console.log("Executando a instrução SQL: \n" + instrucao);
